@@ -84,4 +84,17 @@ This repository contains the following ML projects:
 
 ---
 
-## 🏗️ Folder Structure (Generalized)
+---
+
+## 📬 Contact  
+**Uday Vimal**  
+🎓 Data Science & Computer Science Engineering  
+📍 India  
+📧 Email: **udayvimal08@gmail.com**  
+🔗 GitHub: [github.com/udayvimal](https://github.com/udayvimal)  
+🔗 LinkedIn: www.linkedin.com/in/uday-vimal-9a1a3a253
+
+---
+
+⭐ **If you like this repository, please star it — it motivates me to keep building!**
+
