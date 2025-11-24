@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 4
+names: ['crosswalk', 'speedlimit', 'stop', 'trafficlight']
+
+roboflow:
+  workspace: new-workspace-soehg
+  project: ai-final-project-hzhu0
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/new-workspace-soehg/ai-final-project-hzhu0/dataset/2

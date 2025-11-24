@@ -1,0 +1,13 @@
+train: c:\PROJECT02\DataSet\train\images
+val:  c:\PROJECT02\DataSet\valid\images
+test: c:\PROJECT02\DataSet\test\images
+
+nc: 41
+names: ['0', '1', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '2', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '3', '30', '31', '32', '33', '34', '35', '4', '5', '6', '7', '8', '9', 'crosswalk', 'speedlimit', 'stop', 'traffic_signrotation', 'trafficlight']
+
+roboflow:
+  workspace: nitr-bn4oa
+  project: traffic-sign-detection-1eczb
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/nitr-bn4oa/traffic-sign-detection-1eczb/dataset/2

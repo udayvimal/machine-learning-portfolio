@@ -1,0 +1,12 @@
+.env
+C:\Users\2k22c\myenv\venv\Image_Recognition_Chatbot\mainwork\__pycache__
+C:\Users\2k22c\myenv\venv\Image_Recognition_Chatbot\mainwork\image_venv
+image_venv/
+__pycache__/
+
+# secrets / env files
+.env
+*.env
+
+# misc
+*.jpg
