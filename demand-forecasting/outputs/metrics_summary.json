@@ -1,0 +1,107 @@
+{
+  "sarima": {
+    "model": "SARIMA(1,1,1)+CalendarRegressors",
+    "category": "Electronics",
+    "granularity": "weekly",
+    "MAPE": 33.76,
+    "RMSE": 5644.9,
+    "MAE": 4275.7,
+    "n_quarters": 6
+  },
+  "xgboost": {
+    "model": "XGBoost+LagFeatures",
+    "granularity": "daily (all categories)",
+    "MAPE": 8.19,
+    "RMSE": 331.1,
+    "MAE": 168.7,
+    "n_features": 20
+  },
+  "sarima_quarterly": [
+    {
+      "quarter": "2022-Q3",
+      "n_weeks": 13,
+      "MAPE": 22.66,
+      "RMSE": 2385.6,
+      "MAE": 1944.2
+    },
+    {
+      "quarter": "2022-Q4",
+      "n_weeks": 13,
+      "MAPE": 28.54,
+      "RMSE": 6365.3,
+      "MAE": 4922.8
+    },
+    {
+      "quarter": "2023-Q1",
+      "n_weeks": 13,
+      "MAPE": 77.77,
+      "RMSE": 10216.0,
+      "MAE": 10152.8
+    },
+    {
+      "quarter": "2023-Q2",
+      "n_weeks": 13,
+      "MAPE": 23.6,
+      "RMSE": 1892.2,
+      "MAE": 1767.0
+    },
+    {
+      "quarter": "2023-Q3",
+      "n_weeks": 13,
+      "MAPE": 27.22,
+      "RMSE": 2992.7,
+      "MAE": 2594.8
+    },
+    {
+      "quarter": "2023-Q4",
+      "n_weeks": 13,
+      "MAPE": 22.77,
+      "RMSE": 5299.1,
+      "MAE": 4272.6
+    }
+  ],
+  "xgboost_quarterly": [
+    {
+      "quarter": "2022-Q3",
+      "n_days_x_cats": 460,
+      "MAPE": 8.1,
+      "RMSE": 224.1,
+      "MAE": 152.6
+    },
+    {
+      "quarter": "2022-Q4",
+      "n_days_x_cats": 460,
+      "MAPE": 10.32,
+      "RMSE": 572.4,
+      "MAE": 249.5
+    },
+    {
+      "quarter": "2023-Q1",
+      "n_days_x_cats": 450,
+      "MAPE": 7.72,
+      "RMSE": 219.7,
+      "MAE": 145.4
+    },
+    {
+      "quarter": "2023-Q2",
+      "n_days_x_cats": 455,
+      "MAPE": 6.71,
+      "RMSE": 154.0,
+      "MAE": 117.6
+    },
+    {
+      "quarter": "2023-Q3",
+      "n_days_x_cats": 460,
+      "MAPE": 7.4,
+      "RMSE": 202.6,
+      "MAE": 136.9
+    },
+    {
+      "quarter": "2023-Q4",
+      "n_days_x_cats": 460,
+      "MAPE": 8.86,
+      "RMSE": 405.6,
+      "MAE": 209.1
+    }
+  ]
+}
