@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 import missingno as msno
-test_df = pd.read_csv("C:/myenv/venv/internship project/data/test.csv")
-train_df = pd.read_csv("C:/myenv/venv/internship project/data/train.csv")
+test_df = pd.read_csv("test.csv")
+train_df = pd.read_csv("train.csv")
 print(train_df)
 train_df.describe(include='all')
 train_df.isnull().sum().sort_values(ascending = False).head(10)
@@ -142,7 +142,7 @@ RANDOM_SEED = 23
 kfolds = KFold(n_splits=10, shuffle=True, random_state=RANDOM_SEED)
 def tune(objective):
     study = optuna.create_study(direction= "maximize")
-    study.optimize(objective,n_trials==100)
+    study.optimize(objective, n_trials=100)
     params = study.best_params
     best_score = study.best_value
     print(f"Best score: {best_score} \nOptimized parameters: {params}")
@@ -175,8 +175,7 @@ def lasso_objective(trial):
 lasso_params =  {'alpha': 0.0009661425571276957}
 lasso = Lasso(**lasso_params, random_state=RANDOM_SEED)
 lasso.fit(X_train,y_train)
-from sklearn.ensemble import StackingRegressor, RandomForestRegressor
-from sklearn.ensemble import GradientBoostingRegressor as gbr
+from sklearn.ensemble import StackingRegressor, RandomForestRegressor, GradientBoostingRegressor
 def gbr_objective(trial):
     _n_estimators = trial.suggest_int("n_estimators", 50, 2000)
     _learning_rate = trial.suggest_float("learning_rate", 0.01, 1)
@@ -219,11 +218,11 @@ model=joblib.load("prediction_model.pkl")
 
 
 print('Predict submission')
-final_test_df = pd.read_csv("C:/myenv/venv/internship project/data/test.csv")
+final_test_df = pd.read_csv("test.csv")
 
 final_test_df['AdView'] = np.round(np.expm1(model.predict(X_test))).astype(int)
 
-final_test_df.to_csv("C://myenv//venv//internship project//data//submission_test.csv", index=False)
+final_test_df.to_csv("submission_test.csv", index=False)
 final_test_df.head()
 print(final_test_df)
 

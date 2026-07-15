@@ -1,100 +1,59 @@
-# 🧠 Machine Learning Portfolio  
-Welcome to my **Machine Learning & Data Science Portfolio**, a collection of end-to-end projects that showcase my skills in **Python, ML/DL, Computer Vision, NLP, and Deployment**.  
-This portfolio highlights real-world problem solving, structured pipelines, clean code, and production-ready ML workflows.
+# Uday Vimal — Machine Learning Portfolio
+
+Python · scikit-learn · Deep Learning · Computer Vision · NLP · Deployment
 
 ---
 
-## 📂 Project Structure
+## Key Results
 
-This repository contains the following ML projects:
-
-| Project Name | Description |
-|--------------|-------------|
-| **HOTEBOOKINGPREDICTION-main** | Logistic Regression model to predict hotel booking cancellations using data preprocessing, feature engineering, and model evaluation. |
-| **Image_Recognition_Chatbot-master** | Vision-powered AI chatbot using image captioning (BLIP) & Python GUI to recognize objects from images and respond interactively. |
-| **MOVIE-RECOMMENDATION-SYSTEM-main** | Content-based filtering system using cosine similarity & NLP to recommend movies based on user preferences. |
-| **REAL-TIME-OBJECT-DETECTION-SYSTEM-main** | Real-time object detection using YOLO/OpenCV with webcam feed, including tracking & bounding box visualization. |
-| **RoadSignDetection-master** | Traffic sign classification using CNNs trained on GTSRB dataset for autonomous driving applications. |
-| **User-Authentication-ML-Prediction-System-main** | ML-based authentication/authorization system predicting user login anomalies for security analytics. |
-| **Youtube-ads-view-prediction--main** | Regression model to predict YouTube ad views using feature engineering & ML algorithms. |
-| **aichatbot-master** | Rule-based + ML hybrid chatbot trained on FAQs with NLP preprocessing, text classification & Python UI. |
-| **data-summarization-master** | NLP-based text summarizer using extractive/abstractive techniques to generate concise summaries. |
-| **fakenewspredicton-master** | Fake news classifier using TF-IDF + ML algorithms with complete EDA, preprocessing, and evaluation. |
+- **Sourcing Fraud Prediction** — gradient boosting classifier detecting procurement fraud patterns; feature-engineered from vendor and transaction data, evaluated with precision/recall at business-relevant thresholds.
+- **Customer Churn Prediction** — decision tree model on SME customer churn dataset with JWT-authenticated FastAPI backend; end-to-end from training script to REST prediction endpoint.
+- **Demand Forecasting** — stacking regressor (Ridge + Lasso + GradientBoosting) with Optuna hyperparameter tuning on YouTube ad-view data; log-transform target, 10-fold CV.
+- **Road Sign Detection** — YOLOv8 fine-tuned on a real-world annotated dataset (Roboflow); evaluated on held-out test split.
 
 ---
 
-## 🚀 Skills Demonstrated Across These Projects
+## About this repository
 
-### 🔹 **Machine Learning**
-- Regression & Classification (LR, RF, SVM, XGBoost)
-- Model evaluation (AUC, confusion matrix, F1)
-- Feature engineering & preprocessing pipelines
-
-### 🔹 **Deep Learning**
-- CNNs for image classification  
-- Transfer Learning  
-- Real-time CV pipelines with OpenCV
-
-### 🔹 **Computer Vision**
-- YOLO-based object detection  
-- Road sign detection (GTSRB dataset)  
-- Image preprocessing & augmentation  
-
-### 🔹 **Natural Language Processing**
-- Text classification  
-- TF-IDF, Word2Vec  
-- Summarization, embeddings  
-- Chatbot intent classification
-
-### 🔹 **Data Engineering**
-- Clean, preprocess, handle missing values  
-- Data pipelines  
-- EDA & visualization  
-
-### 🔹 **Tools & Technologies**
-- Python, NumPy, Pandas, Scikit-Learn  
-- OpenCV, TensorFlow / PyTorch  
-- NLP libraries  
-- Streamlit / Flask  
-- Git, GitHub
+These projects were built individually during my B.Tech — across coursework, internships, and personal exploration — and collected into this repo as I set up GitHub properly. Some folder names reflect the original working names I used at the time. The three flagship projects listed below are the primary work to look at first; the remaining folders are additional coursework and tutorial-level implementations.
 
 ---
 
-## 📊 Example Workflows Included in Projects
+## Projects
 
-### ✔️ End-to-End ML Pipeline
-- Data extraction  
-- EDA & cleaning  
-- Feature selection  
-- Model building  
-- Hyperparameter tuning  
-- Evaluation  
-- Deployment-ready script
+> **Primary projects to look at first** (marked with ★):
 
-### ✔️ Real-Time Systems
-- Live object detection  
-- Interactive chatbot  
-- Model inference pipeline
-
-### ✔️ NLP Pipeline
-- Text cleaning  
-- Vectorization  
-- Model training  
-- Summarization / classification
+| Folder | Description |
+|---|---|
+| ★ [Sourcing Fraud Prediction Model](Sourcing-Fraud-Prediction-Model/) | Gradient boosting classifier for procurement fraud detection — feature engineering, threshold tuning, evaluation report |
+| ★ [Customer Churn Prediction](User-Authentication-ML-Prediction-System-main/) | Decision tree churn model with FastAPI + JWT auth backend; `train_model.py` trains on `sme_customer_churn.csv` |
+| ★ [Demand Forecasting / YouTube Ads View Prediction](Youtube-ads-view-prediction--main/) | Stacking regressor with Optuna tuning; Ridge + Lasso + GBR; 10-fold CV; log-transform pipeline |
+| [Image Recognition Chatbot](Image_Recognition_Chatbot-master/) | Vision chatbot: BLIP image captioning + DeiT classification; responds to fabric/style/season queries |
+| [Movie Recommendation System](MOVIE-RECOMMENDATION-SYSTEM-main/) | Content-based filtering with cosine similarity + Streamlit dark-mode UI; run `preprocess.py` first |
+| [Real-Time Object Detection](REAL-TIME-OBJECT-DETECTION-SYSTEM-main/) | YOLOv8 real-time detection pipeline with OpenCV webcam feed |
+| [Road Sign Detection](RoadSignDetection-master/) | YOLOv8 fine-tuned on Roboflow road sign dataset |
+| [AI Chatbot](aichatbot-master/) | FAISS + LangChain + Mistral RAG chatbot on PDF documents |
+| [Data Summarization](data-summarization-master/) | Flask app using BART (facebook/bart-large-cnn) for abstractive text summarization |
+| [Fake News Detection](fakenewspredicton-master/) | TF-IDF + PassiveAggressiveClassifier Flask web app; run `train_model.py` first |
+| [Hotel Booking Prediction](HOTEBOOKINGPREDICTION-main/) | Logistic regression model predicting cancellations; full EDA and preprocessing notebook |
 
 ---
 
+## Tech Stack
+
+| Area | Technologies |
+|---|---|
+| ML / Classical | scikit-learn, pandas, NumPy, Optuna, XGBoost, LightGBM |
+| Deep Learning | PyTorch, Transformers (BLIP, BART, DeiT) |
+| Computer Vision | YOLOv8 (Ultralytics), OpenCV |
+| NLP | TF-IDF, FAISS, LangChain, Mistral |
+| Deployment | FastAPI, Flask, Streamlit, SQLAlchemy, JWT |
+| Visualization | matplotlib, seaborn |
+
 ---
 
-## 📬 Contact  
-**Uday Vimal**  
-🎓 Data Science & Computer Science Engineering  
-📍 India  
-📧 Email: **udayvimal08@gmail.com**  
-🔗 GitHub: [github.com/udayvimal](https://github.com/udayvimal)  
-🔗 LinkedIn: www.linkedin.com/in/uday-vimal-9a1a3a253
+## Contact
 
----
-
-⭐ **If you like this repository, please star it — it motivates me to keep building!**
-
+**Email:** udayvimal08@gmail.com
+**GitHub:** [github.com/udayvimal](https://github.com/udayvimal)
+**LinkedIn:** [linkedin.com/in/uday-vimal-9a1a3a253](https://linkedin.com/in/uday-vimal-9a1a3a253)

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake News Detector</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: 60px auto; background: #f4f4f4; }
+        h1 { color: #333; }
+        textarea { width: 100%; height: 150px; padding: 10px; font-size: 14px; }
+        button { margin-top: 10px; padding: 10px 24px; background: #2563eb; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 15px; }
+        button:hover { background: #1d4ed8; }
+        .result { margin-top: 20px; padding: 16px; border-radius: 6px; font-size: 16px; font-weight: bold; }
+        .real { background: #d1fae5; color: #065f46; }
+        .fake { background: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <h1>Fake News Detector</h1>
+    <p>Paste a news article below and click <strong>Predict</strong> to check if it is real or fake.</p>
+    <form action="/predict" method="POST">
+        <textarea name="message" placeholder="Paste news article text here..."></textarea><br>
+        <button type="submit">Predict</button>
+    </form>
+    {% if prediction is defined %}
+        {% if prediction == 1 or prediction == "FAKE" %}
+            <div class="result fake">Prediction: FAKE NEWS</div>
+        {% else %}
+            <div class="result real">Prediction: REAL NEWS</div>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

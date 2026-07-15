@@ -72,7 +72,8 @@ def extract_text_from_books(directory):
     return text_data
 
 # Extract text data from all PDFs in the specified directory
-book_text_data = extract_text_from_books(r"C:\Users\2k22c\myenv\venv\Image_Recognition_Chatbot\books")
+_books_dir = "books"
+book_text_data = extract_text_from_books(_books_dir) if os.path.isdir(_books_dir) else ""
 
 # Function to extract attributes from the caption and text data (learn from PDF content)
 def extract_attributes(caption, query, book_data):
@@ -162,8 +163,9 @@ def chat_with_image(image_path, query, history=[]):
 
 # Main driver to test the system
 if __name__ == "__main__":
-    image_path = "C:/Users/2k22c/myenv/venv/Image_Recognition_Chatbot/Image_Recognition_Chatbot/swapnil2a.jpg"
-    conversation_history = [] 
+    import sys
+    image_path = sys.argv[1] if len(sys.argv) > 1 else "sample_image.jpg"
+    conversation_history = []
     query = "What is the fabric and style of this outfit?"
     response, conversation_history = chat_with_image(image_path, query, conversation_history)
     print(response)

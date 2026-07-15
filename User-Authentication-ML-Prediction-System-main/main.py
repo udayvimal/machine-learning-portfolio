@@ -14,20 +14,18 @@ from pydantic import BaseModel
 from typing import List
 
 # ✅ Import Database & Models
-from backend.database import SessionLocal, engine
-from backend.models import User
+from database import SessionLocal, engine
+from models import User
 
-# ✅ Define Base Directory (Fixed Path Setup)
-BASE_DIR = Path(__file__).resolve().parent.parent
-STATIC_DIR = BASE_DIR / "frontend"
-if not STATIC_DIR.exists():
-    raise RuntimeError(f"Directory '{STATIC_DIR}' does not exist. Check your project structure.")
+# ✅ Define Base Directory
+BASE_DIR = Path(__file__).resolve().parent
+STATIC_DIR = BASE_DIR
 
 # ✅ Create FastAPI App
 app = FastAPI()
 
 # ✅ Serve Static Files (Frontend)
-app.mount("/frontend", StaticFiles(directory=STATIC_DIR), name="frontend")
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 # 🔐 Password Hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -138,7 +136,7 @@ class PredictionInput(BaseModel):
 
 import pickle
 
-from backend.crud import save_prediction  # ✅ Import save_prediction function
+from crud import save_prediction
 
 @app.post("/predict/")
 def predict(
@@ -146,7 +144,7 @@ def predict(
     current_user: User = Depends(get_current_user),  # Get user from token
     db: Session = Depends(get_db)  # ✅ Add database session
 ):
-    model_path = BASE_DIR / "C:/Users/2k22c/myenv/venv/PROJECTSTRUCTURE/backend/decision_tree_model.pkl"  # ✅ Ensure correct model path
+    model_path = BASE_DIR / "decision_tree_model.pkl"
 
     try:
         # ✅ Load model using pickle

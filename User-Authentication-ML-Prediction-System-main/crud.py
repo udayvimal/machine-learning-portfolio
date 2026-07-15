@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from backend.models import User
+from models import User
 
 def create_user(db: Session, name: str, email: str, password: str):
     new_user = User(name=name, email=email, password=password)
@@ -18,7 +18,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 10):
     :return: List of users
     """
     return db.query(User).order_by(User.id).offset(skip).limit(limit).all()
-from backend.models import Prediction
+from models import Prediction
 
 def save_prediction(db: Session, user_id: int, features: dict, prediction: str):
     db_prediction = Prediction(
