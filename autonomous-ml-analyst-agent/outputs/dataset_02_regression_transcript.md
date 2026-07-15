@@ -2,46 +2,44 @@
 
 ## NODE 1: DATA PROFILING
 
-**Dataset shape**: 400 rows x 8 columns
-**Numeric columns** (7): sqft, bedrooms, bathrooms, year_built, distance_to_center_km, lot_size_acres, sale_price
-**Categorical columns** (1): neighborhood_type
+### Data Profile
+#### Shape
+The dataset consists of 400 rows and 8 columns, providing a moderate-sized dataset for analysis. The number of columns is relatively small, which could indicate a focused dataset with a specific set of features.
 
-**Missing-value audit**:
-  No missing values detected across any column — data appears well-curated.
+#### Missing Values
+There are no missing values in the dataset, as indicated by the `missing` and `missing_pct` sections. This is a positive aspect, as it eliminates the need for imputation or other missing value handling techniques.
 
-**Numeric distributions**:
-  • `sqft`: mean=2371.205, std=972.686, range=[663.0, 4199.0]
-  • `bedrooms`: mean=2.987, std=1.42, range=[1.0, 5.0]
-  • `bathrooms`: mean=2.42, std=1.011, range=[1.0, 4.0]
-  • `year_built`: mean=1990.737, std=17.456, range=[1960.0, 2023.0]
-  • `distance_to_center_km`: mean=8.179, std=7.409, range=[0.5, 40.0] — highly right-skewed (skew=1.67)
-  • `lot_size_acres`: mean=0.643, std=0.311, range=[0.1, 1.2]
-  • `sale_price`: mean=253159.5, std=89792.125, range=[80000.0, 466300.0]
+#### Numeric Distributions
+The numeric columns exhibit a range of distributions:
+* `sqft` has a mean of 2371.21 and a standard deviation of 972.69, with a skewness of 0.056, indicating a relatively symmetrical distribution.
+* `bedrooms` has a mean of 2.99 and a standard deviation of 1.42, with a skewness of 0.08, indicating a slightly positively skewed distribution.
+* `bathrooms` has a mean of 2.42 and a standard deviation of 1.01, with a skewness of 0.114, indicating a slightly positively skewed distribution.
+* `year_built` has a mean of 1990.74 and a standard deviation of 17.46, with a skewness of 0.086, indicating a relatively symmetrical distribution.
+* `distance_to_center_km` has a mean of 8.18 and a standard deviation of 7.41, with a skewness of 1.67, indicating a highly positively skewed distribution. This suggests that most data points are clustered near the lower end of the range, with a long tail of outliers.
+* `lot_size_acres` has a mean of 0.64 and a standard deviation of 0.31, with a skewness of -0.056, indicating a relatively symmetrical distribution.
+* `sale_price` has a mean of 253159.5 and a standard deviation of 89792.13, with a skewness of 0.019, indicating a relatively symmetrical distribution.
 
-**Categorical columns**:
-  • `neighborhood_type`: 4 unique values (top: Suburbs, Downtown, Rural)
+#### Categorical Columns
+The `neighborhood_type` column has 4 unique values, with the following distribution:
+* Suburbs: 187 (46.75% of the data)
+* Downtown: 88 (22% of the data)
+* Rural: 85 (21.25% of the data)
+* Waterfront: 40 (10% of the data)
 
+This suggests that the data is predominantly composed of suburban neighborhoods, with a smaller proportion of downtown, rural, and waterfront areas.
 
-**Quality observations**:
-  • No major quality issues detected.
+#### Quality Observations
+* The `distance_to_center_km` column has a high skewness, which may indicate the presence of outliers or a non-normal distribution. This could be worth exploring further to determine the cause of this skewness.
+* The `sale_price` column has a relatively high standard deviation, which may indicate a wide range of prices in the data. This could be worth exploring further to determine the factors contributing to this variation.
+* The `neighborhood_type` column has a relatively balanced distribution, with no single category dominating the data. This suggests that the data may be representative of a diverse range of neighborhoods.
+* The lack of missing values is a positive aspect, as it eliminates the need for imputation or other missing value handling techniques.
+* The dataset appears to be well-structured, with a clear set of features and no obvious errors or inconsistencies. However, further exploration is needed to determine the relationships between the features and the target variable (if any).
 
 ---
 
 ## NODE 2: PROBLEM FRAMING
 
-**Problem framing analysis**
-
-I examined all 8 columns for naming patterns, cardinality, and data type to identify the prediction target.
-
-**Selected target column**: `sale_price`
-Reasoning: `sale_price` has 372 unique values with a continuous numeric distribution -> regression.
-
-**Problem type**: REGRESSION
-
-**Input features** (7 columns):
-`sqft`, `bedrooms`, `bathrooms`, `year_built`, `distance_to_center_km`, `lot_size_acres`, `neighborhood_type`
-
-**Dataset scale**: 400 rows is sufficient for training non-linear models.
+The dataset provided contains various features related to real estate properties, such as square footage, number of bedrooms and bathrooms, year built, distance to the city center, lot size, neighborhood type, and sale price. Upon examining the statistics, it becomes clear that the "sale_price" column is the most likely target variable for prediction. This is because the other columns provide descriptive information about the properties, which could be used to predict the sale price. For instance, the number of bedrooms and bathrooms, square footage, and location (distance to the city center and neighborhood type) are all factors that can influence the sale price of a property. Additionally, the "sale_price" column has a large range of values (from $80,000 to $466,300) and a relatively high standard deviation, indicating that it is a continuous variable that could be predicted using regression analysis. In contrast, the other columns do not have the same level of variability or potential to be predicted based on the other features.
 
 ```json
 {
@@ -55,197 +53,95 @@ Reasoning: `sale_price` has 372 unique values with a continuous numeric distribu
 
 ## NODE 3: FEATURE ENGINEERING
 
-**Feature engineering plan — with rationale for each decision**
+**Feature Engineering Plan**
 
-**Numeric features** (6): sqft, bedrooms, bathrooms, year_built, distance_to_center_km, lot_size_acres
-  → `SimpleImputer(strategy='median')`: robust to outliers; median preferred over mean when distributions are skewed.
-  → `StandardScaler`: zero-mean, unit-variance scaling required for LogisticRegression/Ridge to converge properly. Tree models are scale-invariant but scaling does no harm.
+### 1. Column Dropping
 
-**Categorical features** (1): neighborhood_type
-  → `OneHotEncoder(handle_unknown='ignore')` on ['neighborhood_type']: low cardinality makes OHE tractable; 'ignore' for unseen values at inference.
-  → `SimpleImputer(strategy='most_frequent')`: fills rare NaN gaps with the modal category.
+Based on the provided dataset statistics, no columns will be dropped. The proposed drop list is empty, and all features seem relevant to the regression task of predicting `sale_price`. Each feature provides unique information about the properties, such as size, location, and amenities, which can be useful in predicting the sale price.
 
-**Missing values**: none detected — no imputation required.
+### 2. Encoding Strategy for Categorical Columns
 
-**Estimated final dimensionality**: 6 numeric + ~4 encoded categorical = 10 columns
+- **neighborhood_type**: This categorical feature has a cardinality of 4, which is relatively low. For such features, one-hot encoding (OHE) is a suitable choice. OHE creates new binary features for each category, allowing the model to capture non-linear relationships between categories and the target variable. Since the cardinality is low, OHE won't significantly increase the dimensionality of the dataset, making it a good choice for this feature.
+
+### 3. Scaling Strategy
+
+- **Scaling Numeric Features**: The dataset contains numeric features with varying scales, such as `sqft`, `year_built`, and `sale_price`. To ensure that all features are treated equally by the model and to prevent features with large ranges from dominating the model, scaling is necessary. 
+  - **Standardization**: For most numeric features, standardization (subtracting the mean and then dividing by the standard deviation for each feature) is a good choice. This transforms the features to have a mean of 0 and a standard deviation of 1, which can improve the stability and speed of convergence of many machine learning algorithms.
+  - **Robust Scaling**: For features like `distance_to_center_km`, which has a high skewness (1.67), robust scaling might be more appropriate. Robust scaling is similar to standardization but uses the interquartile range (IQR) instead of the standard deviation, making it more robust to outliers.
+
+### 4. Imputation Strategy
+
+- **Handling Missing Values**: According to the dataset statistics, there are no missing values in the dataset. Therefore, no imputation strategy is needed.
+
+### Estimated Final Feature Count
+
+- **Original Features**: 8 features (`sqft`, `bedrooms`, `bathrooms`, `year_built`, `distance_to_center_km`, `lot_size_acres`, `neighborhood_type`, `sale_price`).
+- **After One-Hot Encoding for `neighborhood_type`**: Since `neighborhood_type` has 4 categories, OHE will create 3 new features (because one category will be used as the reference), and the original `neighborhood_type` column will be dropped. Therefore, this step will add 3 features and remove 1, resulting in a net gain of 2 features.
+- **Total Features After Engineering**: 8 (original) - 1 (`neighborhood_type` dropped) + 3 (new features from OHE) = 10 features.
+
+The final feature count after applying the feature engineering plan is estimated to be **10 features**. This includes the original numeric features after scaling and the new features created by one-hot encoding the categorical feature `neighborhood_type`.
 
 ---
 
 ## NODE 4: MODEL SELECTION & TRAINING
 
-**Model comparison** — metric: R² / RMSE | CV: 5-fold (standard)
+**Ridge Model Performance**
+The Ridge model performed exceptionally well, achieving a high cross-validation mean score of 0.957 and a test score of 0.964. This can be attributed to the fact that Ridge regression is a linear model that is robust to multicollinearity, which is likely present in a dataset with 10 engineered features. The small standard deviation of the cross-validation scores (0.0068) indicates that the model is stable and consistent across different folds of the data. Additionally, the train and test scores are very close, suggesting that the model is not overfitting or underfitting. Given the relatively small dataset size of 400 rows, the Ridge model's simplicity and ability to handle correlated features make it a suitable choice. The fast training time of 0.02 seconds is also a significant advantage.
 
-| Model | CV Score | CV Std | Test Score | Train Time |
-|-------|----------|--------|------------|------------|
-| Ridge                            | 0.9574   | 0.0068 | 0.9643     | 0.02s      |
-| RandomForestRegressor            | 0.8845   | 0.0173 | 0.8989     | 0.52s      |
-| GradientBoostingRegressor        | 0.9184   | 0.0173 | 0.9340     | 0.36s      |
+**Random Forest Regressor Performance**
+The Random Forest Regressor, on the other hand, performed relatively poorly compared to the Ridge model, with a cross-validation mean score of 0.884 and a test score of 0.899. This could be due to the fact that Random Forests are prone to overfitting, especially when dealing with small datasets and a large number of features. The higher standard deviation of the cross-validation scores (0.0173) also suggests that the model is less stable than the Ridge model. Furthermore, the significant difference between the train and test scores (0.983 vs 0.899) indicates that the model is overfitting to the training data. While Random Forests are often effective in handling complex interactions between features, they may not be the best choice for this particular dataset due to its relatively small size and potential lack of complex relationships.
 
-**Selected model**: Ridge
-  Test score: 0.9643 | Train score: 0.9610 | Overfitting gap: 0.0033
+**Gradient Boosting Regressor Performance**
+The Gradient Boosting Regressor achieved a cross-validation mean score of 0.918 and a test score of 0.934, which is better than the Random Forest Regressor but still worse than the Ridge model. Gradient Boosting is a powerful algorithm that can handle complex relationships between features, but it can also be prone to overfitting, especially when dealing with small datasets. The standard deviation of the cross-validation scores (0.0173) is similar to that of the Random Forest Regressor, indicating some instability in the model. The train and test scores are also somewhat different (0.985 vs 0.934), suggesting some degree of overfitting. However, the Gradient Boosting Regressor's performance is still respectable, and it may be a viable option if the dataset size were to increase or if additional features were to be added.
 
-**Top 5 features by relative importance**:
-  sqft                               1.0000  ##############################
-  neighborhood_type_Waterfront       0.6880  ####################
-  neighborhood_type_Rural            0.5730  #################
-  distance_to_center_km              0.3156  #########
-  neighborhood_type_Suburbs          0.2139  ######
+**Model Selection Justification**
+Based on the results, the Ridge model is the clear winner, with the highest cross-validation mean score and test score. Its simplicity, stability, and ability to handle correlated features make it an ideal choice for this particular dataset. While the Gradient Boosting Regressor and Random Forest Regressor are both powerful algorithms, they appear to be overfitting to the training data, which is a significant concern given the small dataset size. The Ridge model's fast training time and lack of overfitting make it a more reliable and efficient choice. Therefore, the Ridge model is selected as the final model for this regression problem.
 
 ---
 
 ## NODE 5: CRITIQUE
 
-**Agent critique of model results**
+### Analysis of Training Results
 
-**Issues flagged**:
-  **Small dataset (400 rows)**: CV score variance will be high. Report confidence intervals alongside point estimates; do not over-interpret small differences between models.
+#### Overfitting:
+The difference between the train score (0.9609953290666654) and the test score (0.9643160755874118) is minimal, with the test score actually being slightly higher. This suggests that there is no significant overfitting. **Severity: INFO**
 
-**Positive observations**:
-  ✓ Train/test gap is tight (-0.0033) — model generalizes well to unseen data.
-  ✓ Strong test performance (0.9643) achieved without leakage signals.
+#### Data Leakage Risks:
+Without access to the feature engineering process and the dataset itself, it's difficult to assess data leakage risks directly. However, the fact that there are no high-correlation features listed could indicate either very effective feature engineering or a lack of relevant features. It's essential to review the feature creation process to ensure no leakage. **Severity: WARNING**
+
+#### Class Imbalance Effects:
+Since the problem is regression (predicting `sale_price`), class imbalance is not directly applicable. However, it's worth noting if the target variable has a skewed distribution, it might affect the model's performance, especially if the model is not robust to outliers or skewness. **Severity: INFO**
+
+#### Suspicious Feature Importance:
+The absence of high-correlation features with the target is unusual for a regression problem with a relatively high performance (Ridge model with scores above 0.96). This could indicate either that the features are very weakly correlated with the target, or there might be an issue with the feature engineering process or the correlation analysis itself. It's crucial to investigate the feature importance further, possibly using techniques like permutation importance or SHAP values. **Severity: WARNING**
+
+#### Other Red Flags:
+- **Dataset Size:** With only 400 rows, the dataset is relatively small for training a robust model, especially if the feature space is large. This could lead to overfitting or underfitting, depending on the model complexity and regularization. **Severity: WARNING**
+- **Model Choice:** While Ridge regression is a good choice for dealing with multicollinearity, the absence of high-correlation features might suggest exploring other models (like Lasso or Elastic Net) to see if they offer better performance or insights. **Severity: INFO**
+
+#### Recommendations:
+1. **Review Feature Engineering:** Ensure that the feature creation process does not introduce any data leakage.
+2. **Explore Feature Importance:** Use techniques like permutation feature importance or SHAP values to understand the contribution of each feature to the model's predictions.
+3. **Consider Data Augmentation or Collection:** If possible, increasing the dataset size could improve the model's robustness and generalization capabilities.
+4. **Model Comparison:** Try other regression models (including Lasso, Elastic Net, and possibly ensemble methods) to compare their performance and feature importance insights.
 
 ---
 
 ## NODE 6: FINAL REPORT
 
-# ML Analysis Report: Housing Prices — Regression (Clean)
+### Executive Summary
+This report presents the results of a regression analysis on housing prices, with the goal of predicting sale prices. Our best-performing model, Ridge regression, achieved a score of 0.9643. However, the analysis also raised warnings for potential data leakage and overfitting, which should be addressed in future work.
 
-> Auto-generated by the Autonomous ML Analyst Agent (LangGraph + scikit-learn)
+### Key Findings
+* The Ridge regression model performed best, with a score of 0.9643.
+* The target variable is sale_price, and the analysis is a regression type.
+* Warnings were raised for potential data leakage and overfitting.
 
----
+### Honest Limitations
+The analysis has two main limitations. Firstly, a leakage warning was raised, indicating that the model may have been influenced by information that would not be available in a real-world prediction scenario. Secondly, an overfitting warning was raised, suggesting that the model may be too complex and prone to poor performance on new, unseen data. These limitations should be carefully considered when interpreting the results.
 
-## Executive Summary
-
-An autonomous 6-node LangGraph agent analyzed the **Housing Prices — Regression (Clean)** dataset
-(400 rows x 8 columns) without any human-provided labels or
-instructions beyond the raw CSV path.
-
-The agent identified **`sale_price`** as the prediction target and determined
-this is a **REGRESSION** problem. After data profiling, adaptive
-feature engineering, and training three candidate models, **Ridge**
-was selected as the best performer with **R² = 0.9643**
-on the held-out test set.
-
----
-
-## 1. Data Profile
-
-**Dataset shape**: 400 rows x 8 columns
-**Numeric columns** (7): sqft, bedrooms, bathrooms, year_built, distance_to_center_km, lot_size_acres, sale_price
-**Categorical columns** (1): neighborhood_type
-
-**Missing-value audit**:
-  No missing values detected across any column — data appears well-curated.
-
-**Numeric distributions**:
-  • `sqft`: mean=2371.205, std=972.686, range=[663.0, 4199.0]
-  • `bedrooms`: mean=2.987, std=1.42, range=[1.0, 5.0]
-  • `bathrooms`: mean=2.42, std=1.011, range=[1.0, 4.0]
-  • `year_built`: mean=1990.737, std=17.456, range=[1960.0, 2023.0]
-  • `distance_to_center_km`: mean=8.179, std=7.409, range=[0.5, 40.0] — highly right-skewed (skew=1.67)
-  • `lot_size_acres`: mean=0.643, std=0.311, range=[0.1, 1.2]
-  • `sale_price`: mean=253159.5, std=89792.125, range=[80000.0, 466300.0]
-
-**Categorical columns**:
-  • `neighborhood_type`: 4 unique values (top: Suburbs, Downtown, Rural)
-
-
-**Quality observations**:
-  • No major quality issues detected.
-
----
-
-## 2. Problem Framing
-
-**Problem framing analysis**
-
-I examined all 8 columns for naming patterns, cardinality, and data type to identify the prediction target.
-
-**Selected target column**: `sale_price`
-Reasoning: `sale_price` has 372 unique values with a continuous numeric distribution -> regression.
-
-**Problem type**: REGRESSION
-
-**Input features** (7 columns):
-`sqft`, `bedrooms`, `bathrooms`, `year_built`, `distance_to_center_km`, `lot_size_acres`, `neighborhood_type`
-
-**Dataset scale**: 400 rows is sufficient for training non-linear models.
-
-```json
-{
-  "target_col": "sale_price",
-  "problem_type": "regression",
-  "n_features": 7
-}
-```
-
----
-
-## 3. Feature Engineering
-
-**Feature engineering plan — with rationale for each decision**
-
-**Numeric features** (6): sqft, bedrooms, bathrooms, year_built, distance_to_center_km, lot_size_acres
-  → `SimpleImputer(strategy='median')`: robust to outliers; median preferred over mean when distributions are skewed.
-  → `StandardScaler`: zero-mean, unit-variance scaling required for LogisticRegression/Ridge to converge properly. Tree models are scale-invariant but scaling does no harm.
-
-**Categorical features** (1): neighborhood_type
-  → `OneHotEncoder(handle_unknown='ignore')` on ['neighborhood_type']: low cardinality makes OHE tractable; 'ignore' for unseen values at inference.
-  → `SimpleImputer(strategy='most_frequent')`: fills rare NaN gaps with the modal category.
-
-**Missing values**: none detected — no imputation required.
-
-**Estimated final dimensionality**: 6 numeric + ~4 encoded categorical = 10 columns
-
----
-
-## 4. Model Comparison
-
-**Model comparison** — metric: R² / RMSE | CV: 5-fold (standard)
-
-| Model | CV Score | CV Std | Test Score | Train Time |
-|-------|----------|--------|------------|------------|
-| Ridge                            | 0.9574   | 0.0068 | 0.9643     | 0.02s      |
-| RandomForestRegressor            | 0.8845   | 0.0173 | 0.8989     | 0.52s      |
-| GradientBoostingRegressor        | 0.9184   | 0.0173 | 0.9340     | 0.36s      |
-
-**Selected model**: Ridge
-  Test score: 0.9643 | Train score: 0.9610 | Overfitting gap: 0.0033
-
-**Top 5 features by relative importance**:
-  sqft                               1.0000  ##############################
-  neighborhood_type_Waterfront       0.6880  ####################
-  neighborhood_type_Rural            0.5730  #################
-  distance_to_center_km              0.3156  #########
-  neighborhood_type_Suburbs          0.2139  ######
-
----
-
-## 5. Agent Critique
-
-**Agent critique of model results**
-
-**Issues flagged**:
-  **Small dataset (400 rows)**: CV score variance will be high. Report confidence intervals alongside point estimates; do not over-interpret small differences between models.
-
-**Positive observations**:
-  ✓ Train/test gap is tight (-0.0033) — model generalizes well to unseen data.
-  ✓ Strong test performance (0.9643) achieved without leakage signals.
-
----
-
-## 6. Recommendation
-
-**Recommended model**: Ridge
-**R²** on test set: 0.9643
-
-This model is ready for further validation on a fresh holdout set.
-
-Next steps:
-1. Run on 3-fold nested CV for unbiased performance estimate.
-2. Collect more data to further validate generalisation.
-3. Check feature importance in production monitoring; drift in top features signals data shift.
-4. For deployment: wrap in a sklearn Pipeline with the ColumnTransformer prepended (already done in this run).
-
----
-*Report generated by: Autonomous ML Analyst Agent v1.0*
+### Next Steps
+To build on this work, we recommend:
+* Investigating and addressing the potential data leakage to ensure the model is making predictions based on relevant, available information.
+* Regularizing the model or collecting more data to mitigate overfitting and improve the model's ability to generalize to new data.
+* Continuing to refine and validate the model to increase confidence in its predictions and ensure it is making the most accurate predictions possible.
